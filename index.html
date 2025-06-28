@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>E-Taxe TOGO - Tableau de bord</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .card-border { border-left-width: 6px; }
+  </style>
   <script>
     tailwind.config = {
       theme: {
@@ -19,39 +24,22 @@
     };
   </script>
 </head>
-<body class="bg-color3 text-white min-h-screen">
+<body class="bg-color3 text-white min-h-screen flex flex-col">
 
-  <!-- Navbar -->
-  <nav class="bg-color2 px-6 py-4 flex items-center shadow-md">
-    <div class="text-2xl font-bold tracking-wide flex-1">E-Taxe TOGO</div>
-    <div class="hidden md:flex items-center gap-x-8">
-      <ul class="flex space-x-6 text-white font-medium">
-        <li><a href="#" class="hover:text-color1">Payés</a></li>
-        <li><a href="#" class="hover:text-color1">Impayés</a></li>
-        <li><a href="#" class="hover:text-color1">Historique</a></li>
-        <li><a href="#" class="hover:text-color1">Établissements</a></li>
-        <li>
-          <button id="notifBtn" class="relative focus:outline-none">
-            <!-- Icône cloche -->
-            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-            <!-- Badge notifications non lues -->
-            <span id="notifBadge" class="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1.5 py-0.5 font-bold">3</span>
-          </button>
-          <!-- Menu notifications -->
-          <div id="notifMenu" class="absolute right-0 mt-2 w-72 bg-white text-black rounded-lg shadow-lg hidden z-50">
-            <div class="px-4 py-2 font-semibold border-b border-gray-200">Notifications</div>
-            <ul class="max-h-60 overflow-y-auto">
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">💸 Paiement reçu de 10 000 FCFA</li>
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">📅 Nouvelle échéance de taxe</li>
-              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">⚠️ Taxe impayée détectée</li>
-            </ul>
-            <div class="px-4 py-2 text-right text-sm text-color2 hover:underline cursor-pointer">Tout marquer comme lu</div>
-          </div>
-        </li>
-      </ul>
-      <div class="relative">
+  <!-- Header -->
+  <header class="bg-color2 shadow-sm w-full">
+    <div class="max-w-6xl mx-auto flex items-center justify-between py-4 px-6">
+      <div class="text-2xl font-bold tracking-wide text-white">E-Taxe TOGO</div>
+      <nav class="hidden md:flex gap-x-8 text-sm font-semibold">
+        <a href="index.html" class="hover:text-color1 hover:underline transition text-white">Accueil</a>
+        <a href="payes.html" class="hover:text-color1 hover:underline transition text-white">Payés</a>
+        <a href="impayes.html" class="hover:text-color1 hover:underline transition text-white">Impayés</a>
+        <a href="historiques.html" class="hover:text-color1 hover:underline transition text-white">Historique</a>
+        <a href="#faq" class="hover:text-color1 hover:underline transition text-white">FAQ</a>
+        <a href="#contact" class="hover:text-color1 hover:underline transition text-white">Contact</a>
+        <a href="#mentions" class="hover:text-color1 hover:underline transition text-white">Mentions légales</a>
+      </nav>
+      <div class="relative ml-6">
         <button id="avatarBtn">
           <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="rounded-full w-10 h-10 border-2 border-white">
         </button>
@@ -61,6 +49,18 @@
           <button id="logoutBtn" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">🚪 Déconnexion</button>
         </div>
       </div>
+      <button id="menuBtn" class="md:hidden text-white ml-4">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden bg-color2 px-6 py-4 space-y-2 border-t border-color2">
+      <a href="index.html" class="block text-white hover:text-color1">Accueil</a>
+      <a href="payes.html" class="block text-white hover:text-color1">Payés</a>
+      <a href="impayes.html" class="block text-white hover:text-color1">Impayés</a>
+      <a href="historiques.html" class="block text-white hover:text-color1">Historique</a>
+      <a href="#faq" class="block text-white hover:text-color1">FAQ</a>
+      <a href="#contact" class="block text-white hover:text-color1">Contact</a>
+      <a href="#mentions" class="block text-white hover:text-color1">Mentions légales</a>
     </div>
     <!-- Menu mobile -->
     <button id="menuBtn" class="md:hidden ml-4 text-white">
@@ -78,59 +78,47 @@
     <a href="#" class="block text-white hover:text-color1">Notifications</a>
     <a href="#" class="block text-white hover:text-color1">Historique</a>
     <a href="#" class="block text-white hover:text-color1">Établissements</a>
-    <button id="mobileLogoutBtn" class="block w-full text-left text-white hover:text-color1 text-red-400">🚪 Déconnexion</button>
   </div>
 
-  <!-- Contenu principal -->
-  <main class="p-8">
-    <h1 class="text-3xl font-bold mb-4 text-color1">Bienvenue sur E-Taxe TOGO</h1>
-    <p class="text-white/80 text-lg">
-      Cette plateforme vous permet de consulter vos paiements, régler vos taxes en ligne,
-      et suivre l'historique de vos transactions en toute sécurité.
-    </p>
-  </main>
+  <!-- Contact -->
+  <section id="contact" class="w-full max-w-6xl mx-auto mt-16 mb-12 bg-white text-color2 rounded-lg shadow px-6 border border-color1 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-6 text-color2 text-center">Contact</h2>
+    <div class="w-full max-w-3xl mx-auto">
+      <p>Pour toute question ou assistance, contactez-nous :</p>
+      <ul class="mt-4 space-y-2">
+        <li><span class="font-semibold text-color1">Téléphone :</span> <a href="tel:+22890123456" class="underline">+228 90 12 34 56</a></li>
+        <li><span class="font-semibold text-color1">Email :</span> <a href="mailto:support@etaxetogo.tg" class="underline">support@etaxetogo.tg</a></li>
+        <li><span class="font-semibold text-color1">Adresse :</span> 123 Avenue de la République, Lomé, TOGO</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- Profil utilisateur (caché au début) -->
     <section id="userProfile" class="hidden bg-white text-black p-6 rounded-xl shadow-xl max-w-xl mt-8">
     <h2 class="text-2xl font-bold text-color2 mb-4">Profil de l'utilisateur</h2>
     <div class="space-y-3">
-        <p><strong>Nom :</strong> <span id="userName">Chargement...</span></p>
-        <p><strong>Email :</strong> <span id="userEmail">Chargement...</span></p>
-        <p><strong>Téléphone :</strong> <span id="userPhone">Chargement...</span></p>
-        <p><strong>Adresse :</strong> <span id="userAddress">Chargement...</span></p>
-        <p><strong>Numéro fiscal :</strong> <span id="userFiscal">Chargement...</span></p>
+        <p><strong>Nom :</strong> Kodjo Mensah</p>
+        <p><strong>Email :</strong> kodjo.mensah@example.com</p>
+        <p><strong>Téléphone :</strong> +228 90 12 34 56</p>
+        <p><strong>Adresse :</strong> Lomé, TOGO</p>
+        <p><strong>Numéro fiscal :</strong> TG-123456789</p>
     </div>
-    </section>
+  </section>
 
+  <!-- Footer -->
+  <footer class="bg-color2 text-white py-6 mt-auto">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
+      &copy; 2025 E-Taxe TOGO. Tous droits réservés. | <a href="#mentions" class="underline hover:text-color1">Mentions légales</a>
+    </div>
+  </footer>
 
   <!-- Scripts -->
   <script src="js/client.js"></script>
   <script>
-    const avatarBtn = document.getElementById('avatarBtn');
-    const profileMenu = document.getElementById('profileMenu');
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const notifBtn = document.getElementById('notifBtn');
     const notifMenu = document.getElementById('notifMenu');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
-
-    // Charger les informations de l'utilisateur
-    async function loadUserProfile() {
-      try {
-        const result = await authClient.getProfile();
-        if (result.success) {
-          const user = result.data.user;
-          document.getElementById('userName').textContent = `${user.nom} ${user.prenom}`;
-          document.getElementById('userEmail').textContent = user.email;
-          document.getElementById('userPhone').textContent = user.phone;
-          document.getElementById('userAddress').textContent = user.adresse || 'Non spécifiée';
-          document.getElementById('userFiscal').textContent = user.numero_fiscale;
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement du profil:', error);
-      }
-    }
 
     avatarBtn.addEventListener('click', () => {
       profileMenu.classList.toggle('hidden');
@@ -169,15 +157,13 @@
         notifMenu.classList.add('hidden');
       }
     });
-    
     // Bouton pour afficher le profil
     const showProfileBtn = document.getElementById('showProfile');
     const profileSection = document.getElementById('userProfile');
 
     showProfileBtn.addEventListener('click', () => {
-      profileSection.classList.toggle('hidden');
-      profileMenu.classList.add('hidden'); // ferme le menu déroulant
-      loadUserProfile(); // Charger les données du profil
+    profileSection.classList.toggle('hidden');
+    profileMenu.classList.add('hidden'); // ferme le menu déroulant
     });
 
     notifBtn.addEventListener('click', (e) => {
@@ -185,11 +171,6 @@
       notifMenu.classList.toggle('hidden');
     });
 
-    // Charger le profil au démarrage si l'utilisateur est connecté
-    if (authClient.isAuthenticated()) {
-      loadUserProfile();
-    }
   </script>
-
 </body>
 </html>
