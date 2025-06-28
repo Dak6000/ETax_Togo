@@ -30,6 +30,7 @@ app.post('/api/auth/register', auth.validateRegistration, auth.register);
 app.post('/api/auth/login', auth.validateLogin, auth.login);
 app.post('/api/auth/logout', auth.logout);
 app.get('/api/auth/profile', auth.authenticateToken, auth.getProfile);
+app.put('/api/auth/profile', auth.authenticateToken, auth.updateProfile);
 
 // Routes d'administration
 app.use('/api/admin', adminRoutes);
@@ -46,6 +47,11 @@ app.get('/api/health', (req, res) => {
 // Route pour le dashboard utilisateur
 app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
+// Route pour la page de profil
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'profile.html'));
 });
 
 // Route pour le dashboard administrateur

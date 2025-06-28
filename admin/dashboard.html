@@ -184,16 +184,22 @@
   <script>
     // Vérifier l'authentification et les droits admin
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('Vérification de l\'authentification admin...');
+      
       if (!authClient.isAuthenticated()) {
-        redirectTo('/login.html');
+        console.log('Utilisateur non authentifié, redirection vers login');
+        window.location.href = '/login.html';
         return;
       }
       
       if (!authClient.isAdmin()) {
+        console.log('Utilisateur non admin, redirection vers dashboard');
         showMessage('Accès refusé. Droits d\'administrateur requis.', 'error');
-        redirectTo('/dashboard');
+        window.location.href = '/dashboard';
         return;
       }
+
+      console.log('Authentification admin validée');
 
       // Charger le nom de l'administrateur
       const adminName = authClient.user ? `${authClient.user.nom} ${authClient.user.prenom}` : 'Administrateur';
@@ -205,7 +211,7 @@
         await authClient.logout();
         showMessage('Déconnexion réussie', 'success');
         setTimeout(() => {
-          redirectTo('/login.html');
+          window.location.href = '/login.html';
         }, 1500);
       });
     });

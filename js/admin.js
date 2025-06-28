@@ -5,58 +5,38 @@ class AdminService {
   // Obtenir les statistiques du dashboard
   async getDashboardStats() {
     try {
-      // Statistiques des utilisateurs (commerçants)
-      const totalUsers = await getQuery('SELECT COUNT(*) as count FROM users');
-      
-      // Statistiques des agents (à implémenter plus tard)
-      const totalAgents = await getQuery('SELECT COUNT(*) as count FROM agents') || { count: 0 };
+      // Statistiques des utilisateurs
+      const totalUsersResult = await getQuery('SELECT COUNT(*) as count FROM users WHERE role != "admin"');
+      const totalUsers = totalUsersResult.count || 0;
       
       // Statistiques des taxes payées
-      const paidTaxes = await getQuery(`
+      const paidTaxesResult = await getQuery(`
         SELECT COUNT(*) as count, SUM(montant) as total 
         FROM taxes 
         WHERE statut = 'payé'
       `);
+      const paidTaxesCount = paidTaxesResult.count || 0;
+      const totalRevenue = paidTaxesResult.total || 0;
       
       // Statistiques des taxes impayées
-      const unpaidTaxes = await getQuery(`
+      const unpaidTaxesResult = await getQuery(`
         SELECT COUNT(*) as count, SUM(montant) as total 
         FROM taxes 
         WHERE statut = 'en_attente'
       `);
+      const unpaidTaxesCount = unpaidTaxesResult.count || 0;
       
-      // Calcul des pourcentages de croissance (comparaison avec le mois précédent)
-      const currentMonth = new Date().getMonth();
-      const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-      
-      const currentMonthTaxes = await getQuery(`
-        SELECT COUNT(*) as count 
-        FROM taxes 
-        WHERE statut = 'payé' 
-        AND strftime('%m', created_at) = ?
-      `, [String(currentMonth + 1).padStart(2, '0')]);
-      
-      const lastMonthTaxes = await getQuery(`
-        SELECT COUNT(*) as count 
-        FROM taxes 
-        WHERE statut = 'payé' 
-        AND strftime('%m', created_at) = ?
-      `, [String(lastMonth + 1).padStart(2, '0')]);
-      
-      const growthRate = lastMonthTaxes.count > 0 
-        ? ((currentMonthTaxes.count - lastMonthTaxes.count) / lastMonthTaxes.count * 100).toFixed(1)
-        : 0;
+      // Calcul du taux de paiement
+      const totalTaxes = paidTaxesCount + unpaidTaxesCount;
+      const paymentRate = totalTaxes > 0 ? Math.round((paidTaxesCount / totalTaxes) * 100) : 0;
 
       return {
         success: true,
         data: {
-          totalAgents: totalAgents.count || 24, // Valeur par défaut pour l'instant
-          totalUsers: totalUsers.count,
-          paidTaxes: paidTaxes.count || 0,
-          unpaidTaxes: unpaidTaxes.count || 0,
-          totalRevenue: paidTaxes.total || 0,
-          unpaidAmount: unpaidTaxes.total || 0,
-          growthRate: parseFloat(growthRate)
+          totalUsers: totalUsers,
+          totalRevenue: totalRevenue,
+          unpaidTaxes: unpaidTaxesCount,
+          paymentRate: paymentRate
         }
       };
     } catch (error) {
@@ -172,12 +152,23 @@ class AdminService {
         LIMIT ?
       `, [limit]);
 
+      const formattedActivities = activities.map(activity => {
+        let message = '';
+        if (activity.type === 'tax_payment') {
+          message = `Paiement de ${activity.montant.toLocaleString()} FCFA par ${activity.user_name} ${activity.user_firstname}`;
+        } else if (activity.type === 'user_registration') {
+          message = `Nouvel utilisateur inscrit: ${activity.user_name} ${activity.user_firstname} (${activity.secteur})`;
+        }
+        
+        return {
+          message: message,
+          timeAgo: this.getTimeAgo(new Date(activity.created_at))
+        };
+      });
+
       return {
         success: true,
-        data: activities.map(activity => ({
-          ...activity,
-          timeAgo: this.getTimeAgo(new Date(activity.created_at))
-        }))
+        data: formattedActivities
       };
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'activité récente:', error);
@@ -233,10 +224,12 @@ class AdminService {
         SELECT 
           t.id,
           t.montant,
-          t.created_at,
+          t.created_at as date_echeance,
           t.type_taxe,
-          u.nom as user_name,
-          u.prenom as user_firstname,
+          u.nom,
+          u.prenom,
+          u.email,
+          u.numero_fiscale,
           u.secteur,
           u.phone,
           julianday('now') - julianday(t.created_at) as days_overdue
@@ -259,7 +252,16 @@ class AdminService {
       return {
         success: true,
         data: unpaidTaxes.map(tax => ({
-          ...tax,
+          id: tax.id,
+          nom: tax.nom,
+          prenom: tax.prenom,
+          email: tax.email,
+          numero_fiscale: tax.numero_fiscale,
+          montant: tax.montant,
+          date_echeance: tax.date_echeance,
+          type_taxe: tax.type_taxe,
+          secteur: tax.secteur,
+          phone: tax.phone,
           days_overdue: Math.floor(tax.days_overdue),
           status: this.getOverdueStatus(tax.days_overdue)
         }))

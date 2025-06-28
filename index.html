@@ -64,7 +64,7 @@
             <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="rounded-full w-10 h-10 border-2 border-white">
           </button>
           <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden z-50">
-            <button id="showProfile" class="block w-full text-left px-4 py-2 hover:bg-gray-100">👤 Mon Profil</button>
+            <a href="profile.html" class="block px-4 py-2 hover:bg-gray-100">👤 Mon Profil</a>
             <a href="#" class="block px-4 py-2 hover:bg-gray-100">⚙️ Paramètres</a>
             <button id="logoutBtn" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">🚪 Déconnexion</button>
           </div>
@@ -102,18 +102,6 @@
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
         </svg>
       </div>
-    </div>
-  </section>
-
-  <!-- Profil utilisateur (caché au début) -->
-  <section id="userProfile" class="hidden bg-white text-black p-6 rounded-xl shadow-xl max-w-xl mx-auto mt-8">
-    <h2 class="text-2xl font-bold text-color2 mb-4">Profil de l'utilisateur</h2>
-    <div class="space-y-3">
-      <p><strong>Nom :</strong> <span id="userName">Chargement...</span></p>
-      <p><strong>Email :</strong> <span id="userEmail">Chargement...</span></p>
-      <p><strong>Téléphone :</strong> <span id="userPhone">Chargement...</span></p>
-      <p><strong>Adresse :</strong> <span id="userAddress">Chargement...</span></p>
-      <p><strong>Numéro fiscal :</strong> <span id="userFiscal">Chargement...</span></p>
     </div>
   </section>
 
@@ -218,25 +206,6 @@
     const notifMenu = document.getElementById('notifMenu');
     const logoutBtn = document.getElementById('logoutBtn');
     const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
-    const showProfileBtn = document.getElementById('showProfile');
-    const profileSection = document.getElementById('userProfile');
-
-    // Charger les informations de l'utilisateur
-    async function loadUserProfile() {
-      try {
-        const result = await authClient.getProfile();
-        if (result.success) {
-          const user = result.data.user;
-          document.getElementById('userName').textContent = `${user.nom} ${user.prenom}`;
-          document.getElementById('userEmail').textContent = user.email;
-          document.getElementById('userPhone').textContent = user.phone;
-          document.getElementById('userAddress').textContent = user.adresse || 'Non spécifiée';
-          document.getElementById('userFiscal').textContent = user.numero_fiscale;
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement du profil:', error);
-      }
-    }
 
     // Gestionnaires d'événements
     avatarBtn.addEventListener('click', () => {
@@ -250,12 +219,6 @@
     notifBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       notifMenu.classList.toggle('hidden');
-    });
-
-    showProfileBtn.addEventListener('click', () => {
-      profileSection.classList.toggle('hidden');
-      profileMenu.classList.add('hidden'); // ferme le menu déroulant
-      loadUserProfile(); // Charger les données du profil
     });
 
     // Gestionnaires de déconnexion
@@ -286,11 +249,6 @@
         notifMenu.classList.add('hidden');
       }
     });
-
-    // Charger le profil au démarrage si l'utilisateur est connecté
-    if (authClient.isAuthenticated()) {
-      loadUserProfile();
-    }
   </script>
 </body>
 </html>

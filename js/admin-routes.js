@@ -22,13 +22,13 @@ router.get('/stats', async (req, res) => {
 });
 
 // Route pour obtenir les données du graphique de recettes
-router.get('/revenue-chart', async (req, res) => {
+router.get('/revenue', async (req, res) => {
   try {
     const { period = 'monthly' } = req.query;
     const result = await adminService.getRevenueChartData(period);
     res.json(result);
   } catch (error) {
-    console.error('Erreur route revenue-chart:', error);
+    console.error('Erreur route revenue:', error);
     res.status(500).json({
       success: false,
       message: 'Erreur interne du serveur'
@@ -37,13 +37,13 @@ router.get('/revenue-chart', async (req, res) => {
 });
 
 // Route pour obtenir l'activité récente
-router.get('/recent-activity', async (req, res) => {
+router.get('/activity', async (req, res) => {
   try {
     const { limit = 10 } = req.query;
     const result = await adminService.getRecentActivity(parseInt(limit));
     res.json(result);
   } catch (error) {
-    console.error('Erreur route recent-activity:', error);
+    console.error('Erreur route activity:', error);
     res.status(500).json({
       success: false,
       message: 'Erreur interne du serveur'
@@ -82,13 +82,13 @@ router.get('/unpaid-taxes', async (req, res) => {
 });
 
 // Route pour marquer une taxe comme payée
-router.post('/mark-tax-paid/:taxId', async (req, res) => {
+router.post('/mark-paid', async (req, res) => {
   try {
-    const { taxId } = req.params;
+    const { taxId } = req.body;
     const result = await adminService.markTaxAsPaid(taxId);
     res.json(result);
   } catch (error) {
-    console.error('Erreur route mark-tax-paid:', error);
+    console.error('Erreur route mark-paid:', error);
     res.status(500).json({
       success: false,
       message: 'Erreur interne du serveur'
@@ -97,13 +97,13 @@ router.post('/mark-tax-paid/:taxId', async (req, res) => {
 });
 
 // Route pour envoyer un rappel
-router.post('/send-reminder/:taxId', async (req, res) => {
+router.post('/remind-payment', async (req, res) => {
   try {
-    const { taxId } = req.params;
+    const { taxId } = req.body;
     const result = await adminService.sendReminder(taxId);
     res.json(result);
   } catch (error) {
-    console.error('Erreur route send-reminder:', error);
+    console.error('Erreur route remind-payment:', error);
     res.status(500).json({
       success: false,
       message: 'Erreur interne du serveur'

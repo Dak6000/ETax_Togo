@@ -315,6 +315,132 @@ async function getProfile(req, res) {
   }
 }
 
+// Fonction pour mettre à jour le profil utilisateur
+async function updateProfile(req, res) {
+  try {
+    const userId = req.user.id;
+    const {
+      nom,
+      prenom,
+      email,
+      phone,
+      adresse,
+      numero_fiscale,
+      secteur,
+      currentPassword,
+      newPassword
+    } = req.body;
+
+    // Validation des champs obligatoires
+    if (!nom || !prenom || !email || !phone || !numero_fiscale || !secteur) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tous les champs obligatoires doivent être remplis'
+      });
+    }
+
+    // Vérifier si l'email existe déjà pour un autre utilisateur
+    const existingUser = await getQuery(
+      'SELECT id FROM users WHERE email = ? AND id != ?',
+      [email, userId]
+    );
+
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cet email est déjà utilisé par un autre utilisateur'
+      });
+    }
+
+    // Vérifier si le numéro fiscal existe déjà pour un autre utilisateur
+    const existingFiscal = await getQuery(
+      'SELECT id FROM users WHERE numero_fiscale = ? AND id != ?',
+      [numero_fiscale, userId]
+    );
+
+    if (existingFiscal) {
+      return res.status(400).json({
+        success: false,
+        message: 'Ce numéro fiscal est déjà utilisé par un autre utilisateur'
+      });
+    }
+
+    // Si un changement de mot de passe est demandé
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({
+          success: false,
+          message: 'Le mot de passe actuel est requis pour changer le mot de passe'
+        });
+      }
+
+      // Vérifier le mot de passe actuel
+      const currentUser = await getQuery(
+        'SELECT password FROM users WHERE id = ?',
+        [userId]
+      );
+
+      const isCurrentPasswordValid = await bcrypt.compare(currentPassword, currentUser.password);
+      if (!isCurrentPasswordValid) {
+        return res.status(400).json({
+          success: false,
+          message: 'Le mot de passe actuel est incorrect'
+        });
+      }
+
+      // Valider le nouveau mot de passe
+      if (newPassword.length < 6) {
+        return res.status(400).json({
+          success: false,
+          message: 'Le nouveau mot de passe doit contenir au moins 6 caractères'
+        });
+      }
+
+      // Hasher le nouveau mot de passe
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+      // Mettre à jour avec le nouveau mot de passe
+      await runQuery(
+        `UPDATE users SET 
+          nom = ?, prenom = ?, email = ?, phone = ?, adresse = ?, 
+          numero_fiscale = ?, secteur = ?, password = ?
+        WHERE id = ?`,
+        [nom, prenom, email, phone, adresse, numero_fiscale, secteur, hashedNewPassword, userId]
+      );
+    } else {
+      // Mettre à jour sans changer le mot de passe
+      await runQuery(
+        `UPDATE users SET 
+          nom = ?, prenom = ?, email = ?, phone = ?, adresse = ?, 
+          numero_fiscale = ?, secteur = ?
+        WHERE id = ?`,
+        [nom, prenom, email, phone, adresse, numero_fiscale, secteur, userId]
+      );
+    }
+
+    // Récupérer l'utilisateur mis à jour
+    const updatedUser = await getQuery(
+      'SELECT id, nom, prenom, email, phone, adresse, numero_fiscale, secteur, role, created_at FROM users WHERE id = ?',
+      [userId]
+    );
+
+    res.json({
+      success: true,
+      message: 'Profil mis à jour avec succès',
+      data: {
+        user: updatedUser
+      }
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du profil:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur interne du serveur'
+    });
+  }
+}
+
 module.exports = {
   validateRegistration,
   validateLogin,
@@ -323,5 +449,6 @@ module.exports = {
   logout,
   authenticateToken,
   requireAdmin,
-  getProfile
+  getProfile,
+  updateProfile
 }; 
