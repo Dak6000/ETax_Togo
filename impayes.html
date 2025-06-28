@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E-Taxe TOGO - Taxes Impayées</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            color1: '#97dde8',
+            color2: '#134d80',
+            color3: '#082026'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-color3 text-white min-h-screen flex flex-col">
+
+  <!-- Navbar simple -->
+  <nav class="bg-color2 px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="text-2xl font-bold tracking-wide">E-Taxe TOGO</div>
+    <a href="index.html" class="text-color1 hover:underline">← Retour au tableau de bord</a>
+  </nav>
+
+  <main class="p-6 flex-grow">
+    <h1 class="text-3xl font-bold mb-6 text-color1">Taxes Impayées</h1>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow-lg text-black">
+      <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-color2 text-white">
+          <tr>
+            <th class="px-6 py-3 text-left">Référence</th>
+            <th class="px-6 py-3 text-left">Montant dû (XOF)</th>
+            <th class="px-6 py-3 text-left">Date limite</th>
+            <th class="px-6 py-3 text-left">Type de taxe</th>
+            <th class="px-6 py-3 text-left">Statut</th>
+            <th class="px-6 py-3 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b hover:bg-color1/20">
+            <td class="px-6 py-4">TX20240601</td>
+            <td class="px-6 py-4 font-semibold">15,000</td>
+            <td class="px-6 py-4">30/06/2024</td>
+            <td class="px-6 py-4">Taxe de marché</td>
+            <td class="px-6 py-4 text-red-600 font-bold">Impayée</td>
+            <td class="px-6 py-4 text-center">
+              <button class="bg-color2 text-white px-4 py-2 rounded hover:bg-color1 transition">Payer</button>
+            </td>
+          </tr>
+          <tr class="border-b hover:bg-color1/20">
+            <td class="px-6 py-4">TX20240515</td>
+            <td class="px-6 py-4 font-semibold">10,000</td>
+            <td class="px-6 py-4">15/06/2024</td>
+            <td class="px-6 py-4">Taxe annuelle</td>
+            <td class="px-6 py-4 text-red-600 font-bold">Impayée</td>
+            <td class="px-6 py-4 text-center">
+              <button class="bg-color2 text-white px-4 py-2 rounded hover:bg-color1 transition">Payer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center space-x-3 text-black">
+      <button class="bg-color1 rounded px-3 py-1 font-semibold hover:bg-color2 transition">1</button>
+      <button class="bg-white rounded px-3 py-1 font-semibold hover:bg-color2 transition">2</button>
+      <button class="bg-white rounded px-3 py-1 font-semibold hover:bg-color2 transition">→</button>
+    </div>
+  </main>
+
+</body>
+</html>

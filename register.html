@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulaire d'inscription</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-[--color3] min-h-screen flex items-center justify-center">
+
+  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl">
+    <h2 class="text-3xl font-bold text-center text-[--color2] mb-6">Inscription</h2>
+    <form id="signupForm" class="space-y-4" method="post">
+      <div class="flex gap-4">
+        <input type="text" name="nom" placeholder="Nom" required class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+        <input type="text" name="prenom" placeholder="Prénom" required class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+      </div>
+
+      <input type="email" name="email" placeholder="Email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+      <input type="tel" name="phone" placeholder="Téléphone" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+      
+      <div class="flex gap-4">
+        <input type="password" name="password" placeholder="Mot de passe" required class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+        <input type="password" name="confirm_password" placeholder="Confirmer mot de passe" required class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+      </div>
+
+      <input type="text" name="adresse" id="adresse" placeholder="Adresse (auto-remplie)" readonly class="w-full px-4 py-2 border rounded-lg bg-gray-100 cursor-not-allowed text-gray-700" />
+
+      <input type="text" name="numero_fiscale" placeholder="Numéro fiscal" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color1]" />
+
+      <select name="secteur" id="secteur" required
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[--color1]">
+        <option value="">Choisir le secteur d'activité</option>
+        <option>Alimentation</option>
+        <option>Vêtements et accessoires</option>
+        <option>Cosmétique & beauté</option>
+        <option>Téléphonie & électronique</option>
+        <option>Quincaillerie & matériaux</option>
+        <option>Restauration</option>
+        <option>Transport local</option>
+        <option>Services numériques</option>
+        <option>Artisanat</option>
+        <option>Coiffure & esthétique</option>
+        <option>Librairie & papeterie</option>
+        <option>Pharmacie & para-pharmacie</option>
+        <option>Éducation privée</option>
+        <option>Entretien & hygiène</option>
+        <option>Construction</option>
+        <option>Produits agricoles</option>
+      </select>
+      <button type="submit" class="w-full bg-[--color2] hover:bg-[--color1] text-white font-semibold py-2 px-4 rounded-lg transition duration-300">S'inscrire</button>
+    </form>
+    <p class="text-sm text-center mt-6 text-gray-600">
+      Deja un compte ?
+      <a href="login.html" class="text-[--color2] hover:underline">Se connecter</a>
+    </p>
+  </div>
+
+  <script>
+    // Auto-remplissage de l’adresse via géolocalisation
+    window.onload = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // API de géocodage OpenStreetMap (Nominatim)
+          const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+            document.getElementById('adresse').value = data.display_name || "Adresse introuvable";
+          } catch (error) {
+            document.getElementById('adresse').value = "Erreur lors de la récupération";
+          }
+        });
+      } else {
+        document.getElementById('adresse').value = "Géolocalisation non supportée";
+      }
+    };
+  </script>
+
+</body>
+</html>

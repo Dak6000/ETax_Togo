@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-Taxe TOGO - Tableau de bord</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            color1: '#97dde8',
+            color2: '#134d80',
+            color3: '#082026'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-color3 text-white min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-color2 px-6 py-4 flex items-center shadow-md">
+    <div class="text-2xl font-bold tracking-wide flex-1">E-Taxe TOGO</div>
+    <div class="hidden md:flex items-center gap-x-8">
+      <ul class="flex space-x-6 text-white font-medium">
+        <li><a href="#" class="hover:text-color1">Payés</a></li>
+        <li><a href="#" class="hover:text-color1">Impayés</a></li>
+        <li><a href="#" class="hover:text-color1">Historique</a></li>
+        <li><a href="#" class="hover:text-color1">Établissements</a></li>
+        <li>
+          <button id="notifBtn" class="relative focus:outline-none">
+            <!-- Icône cloche -->
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <!-- Badge notifications non lues -->
+            <span id="notifBadge" class="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1.5 py-0.5 font-bold">3</span>
+          </button>
+          <!-- Menu notifications -->
+          <div id="notifMenu" class="absolute right-0 mt-2 w-72 bg-white text-black rounded-lg shadow-lg hidden z-50">
+            <div class="px-4 py-2 font-semibold border-b border-gray-200">Notifications</div>
+            <ul class="max-h-60 overflow-y-auto">
+              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">💸 Paiement reçu de 10 000 FCFA</li>
+              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">📅 Nouvelle échéance de taxe</li>
+              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">⚠️ Taxe impayée détectée</li>
+            </ul>
+            <div class="px-4 py-2 text-right text-sm text-color2 hover:underline cursor-pointer">Tout marquer comme lu</div>
+          </div>
+        </li>
+      </ul>
+      <div class="relative">
+        <button id="avatarBtn">
+          <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="rounded-full w-10 h-10 border-2 border-white">
+        </button>
+        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden z-50">
+          <button id="showProfile" class="block w-full text-left px-4 py-2 hover:bg-gray-100">👤 Mon Profil</button>
+          <a href="#" class="block px-4 py-2 hover:bg-gray-100">⚙️ Paramètres</a>
+          <a href="#" class="block px-4 py-2 hover:bg-gray-100">🚪 Déconnexion</a>
+        </div>
+      </div>
+    </div>
+    <!-- Menu mobile -->
+    <button id="menuBtn" class="md:hidden ml-4 text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Menu mobile -->
+  <div id="mobileMenu" class="md:hidden hidden bg-color2 px-6 py-4 space-y-2">
+    <a href="#" class="block text-white hover:text-color1">Payés</a>
+    <a href="#" class="block text-white hover:text-color1">Impayés</a>
+    <a href="#" class="block text-white hover:text-color1">Notifications</a>
+    <a href="#" class="block text-white hover:text-color1">Historique</a>
+    <a href="#" class="block text-white hover:text-color1">Établissements</a>
+  </div>
+
+  <!-- Contenu principal -->
+  <main class="p-8">
+    <h1 class="text-3xl font-bold mb-4 text-color1">Bienvenue sur E-Taxe TOGO</h1>
+    <p class="text-white/80 text-lg">
+      Cette plateforme vous permet de consulter vos paiements, régler vos taxes en ligne,
+      et suivre l'historique de vos transactions en toute sécurité.
+    </p>
+  </main>
+
+  <!-- Profil utilisateur (caché au début) -->
+    <section id="userProfile" class="hidden bg-white text-black p-6 rounded-xl shadow-xl max-w-xl mt-8">
+    <h2 class="text-2xl font-bold text-color2 mb-4">Profil de l'utilisateur</h2>
+    <div class="space-y-3">
+        <p><strong>Nom :</strong> Kodjo Mensah</p>
+        <p><strong>Email :</strong> kodjo.mensah@example.com</p>
+        <p><strong>Téléphone :</strong> +228 90 12 34 56</p>
+        <p><strong>Adresse :</strong> Lomé, TOGO</p>
+        <p><strong>Numéro fiscal :</strong> TG-123456789</p>
+    </div>
+    </section>
+
+
+  <!-- Scripts -->
+  <script>
+    const avatarBtn = document.getElementById('avatarBtn');
+    const profileMenu = document.getElementById('profileMenu');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const notifBtn = document.getElementById('notifBtn');
+    const notifMenu = document.getElementById('notifMenu');
+
+    avatarBtn.addEventListener('click', () => {
+      profileMenu.classList.toggle('hidden');
+    });
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Ferme le menu profil si clic ailleurs
+    document.addEventListener('click', (e) => {
+      if (!avatarBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+        profileMenu.classList.add('hidden');
+      }
+      if (!notifBtn.contains(e.target) && !notifMenu.contains(e.target)) {
+        notifMenu.classList.add('hidden');
+      }
+    });
+    // Bouton pour afficher le profil
+    const showProfileBtn = document.getElementById('showProfile');
+    const profileSection = document.getElementById('userProfile');
+
+    showProfileBtn.addEventListener('click', () => {
+    profileSection.classList.toggle('hidden');
+    profileMenu.classList.add('hidden'); // ferme le menu déroulant
+    });
+
+    notifBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notifMenu.classList.toggle('hidden');
+    });
+
+  </script>
+
+</body>
+</html>

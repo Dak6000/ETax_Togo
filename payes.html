@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E-Taxe TOGO - Taxes Payées</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            color1: '#97dde8',
+            color2: '#134d80',
+            color3: '#082026'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-color3 text-white min-h-screen flex flex-col">
+
+ <!-- Navbar -->
+  <nav class="bg-color2 px-6 py-4 flex justify-between items-center shadow-md">
+    <div class="text-2xl font-bold tracking-wide">E-Taxe TOGO</div>
+
+    <!-- Menu desktop -->
+    <ul class="hidden md:flex space-x-6 text-white font-medium right">
+      <li><a href="#" class="hover:text-color1">Payés</a></li>
+      <li><a href="#" class="hover:text-color1">Impayés</a></li>
+      <li><a href="#" class="hover:text-color1">Notifications</a></li>
+      <li><a href="#" class="hover:text-color1">Historique</a></li>
+      <li><a href="#" class="hover:text-color1">Établissements</a></li>
+    </ul>
+
+    <!-- Avatar -->
+    <div class="relative">
+      <button id="avatarBtn">
+        <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="rounded-full w-10 h-10 border-2 border-white">
+      </button>
+      <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden z-50">
+        <button id="showProfile" class="block w-full text-left px-4 py-2 hover:bg-gray-100">👤 Mon Profil</button>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100">⚙️ Paramètres</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100">🚪 Déconnexion</a>
+      </div>
+    </div>
+
+    <!-- Menu mobile -->
+    <button id="menuBtn" class="md:hidden ml-4 text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Menu mobile -->
+  <div id="mobileMenu" class="md:hidden hidden bg-color2 px-6 py-4 space-y-2">
+    <a href="#" class="block text-white hover:text-color1">Payés</a>
+    <a href="#" class="block text-white hover:text-color1">Impayés</a>
+    <a href="#" class="block text-white hover:text-color1">Notifications</a>
+    <a href="#" class="block text-white hover:text-color1">Historique</a>
+    <a href="#" class="block text-white hover:text-color1">Établissements</a>
+  </div>
+
+  <main class="p-6 flex-grow">
+    <h1 class="text-3xl font-bold mb-6 text-color1">Taxes Payées</h1>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow-lg text-black">
+      <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-color2 text-white">
+          <tr>
+            <th class="px-6 py-3 text-left">Référence</th>
+            <th class="px-6 py-3 text-left">Montant (XOF)</th>
+            <th class="px-6 py-3 text-left">Date de paiement</th>
+            <th class="px-6 py-3 text-left">Mode de paiement</th>
+            <th class="px-6 py-3 text-left">Statut</th>
+            <th class="px-6 py-3 text-center">Reçu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b hover:bg-color1/20">
+            <td class="px-6 py-4">TX20230601</td>
+            <td class="px-6 py-4 font-semibold">15,000</td>
+            <td class="px-6 py-4">01/06/2023</td>
+            <td class="px-6 py-4">Carte bancaire</td>
+            <td class="px-6 py-4 text-green-600 font-bold">Payé</td>
+            <td class="px-6 py-4 text-center">
+              <button title="Télécharger reçu" class="text-color2 hover:text-color1">
+                📄
+              </button>
+            </td>
+          </tr>
+          <tr class="border-b hover:bg-color1/20">
+            <td class="px-6 py-4">TX20230515</td>
+            <td class="px-6 py-4 font-semibold">10,000</td>
+            <td class="px-6 py-4">15/05/2023</td>
+            <td class="px-6 py-4">Mobile Money</td>
+            <td class="px-6 py-4 text-green-600 font-bold">Payé</td>
+            <td class="px-6 py-4 text-center">
+              <button title="Télécharger reçu" class="text-color2 hover:text-color1">
+                📄
+              </button>
+            </td>
+          </tr>
+          <tr class="border-b hover:bg-color1/20">
+            <td class="px-6 py-4">TX20230420</td>
+            <td class="px-6 py-4 font-semibold">20,000</td>
+            <td class="px-6 py-4">20/04/2023</td>
+            <td class="px-6 py-4">Espèces</td>
+            <td class="px-6 py-4 text-green-600 font-bold">Payé</td>
+            <td class="px-6 py-4 text-center">
+              <button title="Télécharger reçu" class="text-color2 hover:text-color1">
+                📄
+              </button>
+            </td>
+          </tr>
+          <!-- Ajoute plus de lignes dynamiquement -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination basique -->
+    <div class="mt-6 flex justify-center space-x-3 text-black">
+      <button class="bg-color1 rounded px-3 py-1 font-semibold hover:bg-color2 transition">1</button>
+      <button class="bg-white rounded px-3 py-1 font-semibold hover:bg-color2 transition">2</button>
+      <button class="bg-white rounded px-3 py-1 font-semibold hover:bg-color2 transition">3</button>
+      <button class="bg-white rounded px-3 py-1 font-semibold hover:bg-color2 transition">→</button>
+    </div>
+  </main>
+
+</body>
+</html>
