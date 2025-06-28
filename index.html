@@ -39,20 +39,43 @@
         <a href="#contact" class="hover:text-color1 hover:underline transition text-white">Contact</a>
         <a href="#mentions" class="hover:text-color1 hover:underline transition text-white">Mentions légales</a>
       </nav>
-      <div class="relative ml-6">
-        <button id="avatarBtn">
-          <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="rounded-full w-10 h-10 border-2 border-white">
+      <div class="flex items-center gap-4">
+        <!-- Notifications -->
+        <button id="notifBtn" class="relative focus:outline-none">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span id="notifBadge" class="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1.5 py-0.5 font-bold">3</span>
         </button>
-        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden z-50">
-          <button id="showProfile" class="block w-full text-left px-4 py-2 hover:bg-gray-100">👤 Mon Profil</button>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100">⚙️ Paramètres</a>
-          <button id="logoutBtn" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">🚪 Déconnexion</button>
+        <!-- Menu notifications -->
+        <div id="notifMenu" class="absolute right-0 mt-2 w-72 bg-white text-black rounded-lg shadow-lg hidden z-50">
+          <div class="px-4 py-2 font-semibold border-b border-gray-200">Notifications</div>
+          <ul class="max-h-60 overflow-y-auto">
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">💸 Paiement reçu de 10 000 FCFA</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">📅 Nouvelle échéance de taxe</li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">⚠️ Taxe impayée détectée</li>
+          </ul>
+          <div class="px-4 py-2 text-right text-sm text-color2 hover:underline cursor-pointer">Tout marquer comme lu</div>
+        </div>
+        
+        <!-- Avatar et menu profil -->
+        <div class="relative">
+          <button id="avatarBtn">
+            <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="rounded-full w-10 h-10 border-2 border-white">
+          </button>
+          <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg hidden z-50">
+            <button id="showProfile" class="block w-full text-left px-4 py-2 hover:bg-gray-100">👤 Mon Profil</button>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">⚙️ Paramètres</a>
+            <button id="logoutBtn" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">🚪 Déconnexion</button>
+          </div>
         </div>
       </div>
       <button id="menuBtn" class="md:hidden text-white ml-4">
         <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
+    
+    <!-- Menu mobile -->
     <div id="mobileMenu" class="md:hidden hidden bg-color2 px-6 py-4 space-y-2 border-t border-color2">
       <a href="index.html" class="block text-white hover:text-color1">Accueil</a>
       <a href="payes.html" class="block text-white hover:text-color1">Payés</a>
@@ -61,24 +84,98 @@
       <a href="#faq" class="block text-white hover:text-color1">FAQ</a>
       <a href="#contact" class="block text-white hover:text-color1">Contact</a>
       <a href="#mentions" class="block text-white hover:text-color1">Mentions légales</a>
+      <button id="mobileLogoutBtn" class="block w-full text-left text-white hover:text-color1 text-red-400">🚪 Déconnexion</button>
     </div>
-    <!-- Menu mobile -->
-    <button id="menuBtn" class="md:hidden ml-4 text-white">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-           viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
-    </button>
-  </nav>
+  </header>
 
-  <!-- Menu mobile -->
-  <div id="mobileMenu" class="md:hidden hidden bg-color2 px-6 py-4 space-y-2">
-    <a href="#" class="block text-white hover:text-color1">Payés</a>
-    <a href="#" class="block text-white hover:text-color1">Impayés</a>
-    <a href="#" class="block text-white hover:text-color1">Notifications</a>
-    <a href="#" class="block text-white hover:text-color1">Historique</a>
-    <a href="#" class="block text-white hover:text-color1">Établissements</a>
-  </div>
+  <!-- Hero section -->
+  <section class="w-full bg-color3 py-16 shadow-sm">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center px-6 gap-8">
+      <div class="flex-1 flex flex-col items-center text-center">
+        <h1 class="text-4xl font-bold mb-4 text-color1">Bienvenue sur E-Taxe TOGO</h1>
+        <p class="text-lg text-white/90 mb-6 max-w-xl">Payez vos taxes locales en toute simplicité, sécurité et rapidité. Retrouvez l'ensemble de vos démarches fiscales en un seul endroit.</p>
+        <a href="#dashboard" class="inline-block bg-color1 hover:bg-white hover:text-color2 font-semibold px-6 py-3 rounded-lg shadow transition">Accéder à mon tableau de bord</a>
+      </div>
+      <div class="hidden md:block flex-1 text-center">
+        <!-- Illustration SVG moderne -->
+        <svg class="w-64 h-64 mx-auto text-color1/20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profil utilisateur (caché au début) -->
+  <section id="userProfile" class="hidden bg-white text-black p-6 rounded-xl shadow-xl max-w-xl mx-auto mt-8">
+    <h2 class="text-2xl font-bold text-color2 mb-4">Profil de l'utilisateur</h2>
+    <div class="space-y-3">
+      <p><strong>Nom :</strong> <span id="userName">Chargement...</span></p>
+      <p><strong>Email :</strong> <span id="userEmail">Chargement...</span></p>
+      <p><strong>Téléphone :</strong> <span id="userPhone">Chargement...</span></p>
+      <p><strong>Adresse :</strong> <span id="userAddress">Chargement...</span></p>
+      <p><strong>Numéro fiscal :</strong> <span id="userFiscal">Chargement...</span></p>
+    </div>
+  </section>
+
+  <!-- Cartes résumé -->
+  <section id="dashboard" class="w-full max-w-6xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-4 gap-6 px-6">
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col items-start card-border border-color1">
+      <div class="flex items-center gap-2 mb-1"><svg class="w-5 h-5 text-color1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-4.41 0-8-1.79-8-4V6c0-2.21 3.59-4 8-4s8 1.79 8 4v8c0 2.21-3.59 4-8 4z"/></svg><span class="text-sm text-color2">Taxes payées</span></div>
+      <div class="text-2xl font-bold text-color2 mb-1">45 000 FCFA</div>
+      <div class="text-xs text-color1">Ce mois-ci</div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col items-start card-border border-red-500">
+      <div class="flex items-center gap-2 mb-1"><svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><span class="text-sm text-color2">Taxes impayées</span></div>
+      <div class="text-2xl font-bold text-red-600 mb-1">15 000 FCFA</div>
+      <div class="text-xs text-color1">À régler</div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col items-start card-border border-color2">
+      <div class="flex items-center gap-2 mb-1"><svg class="w-5 h-5 text-color2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/></svg><span class="text-sm text-color2">Reçus disponibles</span></div>
+      <div class="text-2xl font-bold text-color2 mb-1">7</div>
+      <div class="text-xs text-color1">Téléchargeables</div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col items-start card-border border-yellow-400">
+      <div class="flex items-center gap-2 mb-1"><svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><span class="text-sm text-color2">Notifications</span></div>
+      <div class="text-2xl font-bold text-yellow-500 mb-1">3</div>
+      <div class="text-xs text-color1">Non lues</div>
+    </div>
+  </section>
+
+  <!-- Accès rapide -->
+  <section class="w-full max-w-6xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 px-6 justify-items-center">
+    <a href="payes.html" class="bg-color2 hover:bg-color1 text-white rounded-lg shadow p-8 flex flex-col items-center transition border border-color1">
+      <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      <div class="text-lg font-semibold mb-2">Mes taxes payées</div>
+      <div class="text-sm text-white/80">Consultez l'historique de vos paiements</div>
+    </a>
+    <a href="impayes.html" class="bg-red-600 hover:bg-color1 text-white rounded-lg shadow p-8 flex flex-col items-center transition border border-color1">
+      <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+      <div class="text-lg font-semibold mb-2">Mes taxes impayées</div>
+      <div class="text-sm text-white/80">Régler vos impayés rapidement</div>
+    </a>
+    <a href="historiques.html" class="bg-color1 hover:bg-color2 text-color2 rounded-lg shadow p-8 flex flex-col items-center transition border border-color1">
+      <svg class="w-10 h-10 mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/></svg>
+      <div class="text-lg font-semibold mb-2">Historique</div>
+      <div class="text-sm text-color2/80">Toutes vos opérations</div>
+    </a>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="w-full max-w-6xl mx-auto mt-16 mb-12 bg-white text-color2 rounded-lg shadow px-6 border border-color1 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-6 text-color2 text-center">FAQ</h2>
+    <div class="mb-4 w-full max-w-3xl mx-auto">
+      <h3 class="font-semibold text-color1">Comment payer mes taxes en ligne ?</h3>
+      <p>Connectez-vous, consultez vos impayés et cliquez sur "Payer" pour régler en toute sécurité.</p>
+    </div>
+    <div class="mb-4 w-full max-w-3xl mx-auto">
+      <h3 class="font-semibold text-color1">Quels moyens de paiement sont acceptés ?</h3>
+      <p>Mobile Money, carte bancaire, et paiement en espèces auprès des partenaires agréés.</p>
+    </div>
+    <div class="mb-4 w-full max-w-3xl mx-auto">
+      <h3 class="font-semibold text-color1">Comment obtenir mon reçu ?</h3>
+      <p>Après paiement, téléchargez votre reçu depuis la page "Taxes payées" ou "Historique".</p>
+    </div>
+  </section>
 
   <!-- Contact -->
   <section id="contact" class="w-full max-w-6xl mx-auto mt-16 mb-12 bg-white text-color2 rounded-lg shadow px-6 border border-color1 flex flex-col items-center">
@@ -93,15 +190,12 @@
     </div>
   </section>
 
-  <!-- Profil utilisateur (caché au début) -->
-    <section id="userProfile" class="hidden bg-white text-black p-6 rounded-xl shadow-xl max-w-xl mt-8">
-    <h2 class="text-2xl font-bold text-color2 mb-4">Profil de l'utilisateur</h2>
-    <div class="space-y-3">
-        <p><strong>Nom :</strong> Kodjo Mensah</p>
-        <p><strong>Email :</strong> kodjo.mensah@example.com</p>
-        <p><strong>Téléphone :</strong> +228 90 12 34 56</p>
-        <p><strong>Adresse :</strong> Lomé, TOGO</p>
-        <p><strong>Numéro fiscal :</strong> TG-123456789</p>
+  <!-- Mentions légales -->
+  <section id="mentions" class="w-full max-w-6xl mx-auto mt-16 mb-24 bg-white text-color2 rounded-lg shadow px-6 border border-color1 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-6 text-color2 text-center">Mentions légales</h2>
+    <div class="w-full max-w-3xl mx-auto">
+      <p>Ce site est édité par E-Taxe TOGO. Tous droits réservés. Les informations fournies sont à titre indicatif et n'ont pas de valeur contractuelle.</p>
+      <p class="mt-2">Pour plus de détails, veuillez consulter notre politique de confidentialité ou nous contacter.</p>
     </div>
   </section>
 
@@ -115,11 +209,36 @@
   <!-- Scripts -->
   <script src="js/client.js"></script>
   <script>
+    // Récupérer tous les éléments nécessaires
+    const avatarBtn = document.getElementById('avatarBtn');
+    const profileMenu = document.getElementById('profileMenu');
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const notifBtn = document.getElementById('notifBtn');
     const notifMenu = document.getElementById('notifMenu');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+    const showProfileBtn = document.getElementById('showProfile');
+    const profileSection = document.getElementById('userProfile');
 
+    // Charger les informations de l'utilisateur
+    async function loadUserProfile() {
+      try {
+        const result = await authClient.getProfile();
+        if (result.success) {
+          const user = result.data.user;
+          document.getElementById('userName').textContent = `${user.nom} ${user.prenom}`;
+          document.getElementById('userEmail').textContent = user.email;
+          document.getElementById('userPhone').textContent = user.phone;
+          document.getElementById('userAddress').textContent = user.adresse || 'Non spécifiée';
+          document.getElementById('userFiscal').textContent = user.numero_fiscale;
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement du profil:', error);
+      }
+    }
+
+    // Gestionnaires d'événements
     avatarBtn.addEventListener('click', () => {
       profileMenu.classList.toggle('hidden');
     });
@@ -128,7 +247,18 @@
       mobileMenu.classList.toggle('hidden');
     });
 
-    // Gestionnaire de déconnexion
+    notifBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notifMenu.classList.toggle('hidden');
+    });
+
+    showProfileBtn.addEventListener('click', () => {
+      profileSection.classList.toggle('hidden');
+      profileMenu.classList.add('hidden'); // ferme le menu déroulant
+      loadUserProfile(); // Charger les données du profil
+    });
+
+    // Gestionnaires de déconnexion
     logoutBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       await authClient.logout();
@@ -138,7 +268,6 @@
       }, 1500);
     });
 
-    // Gestionnaire de déconnexion mobile
     mobileLogoutBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       await authClient.logout();
@@ -148,7 +277,7 @@
       }, 1500);
     });
 
-    // Ferme le menu profil si clic ailleurs
+    // Fermer les menus si clic ailleurs
     document.addEventListener('click', (e) => {
       if (!avatarBtn.contains(e.target) && !profileMenu.contains(e.target)) {
         profileMenu.classList.add('hidden');
@@ -157,20 +286,11 @@
         notifMenu.classList.add('hidden');
       }
     });
-    // Bouton pour afficher le profil
-    const showProfileBtn = document.getElementById('showProfile');
-    const profileSection = document.getElementById('userProfile');
 
-    showProfileBtn.addEventListener('click', () => {
-    profileSection.classList.toggle('hidden');
-    profileMenu.classList.add('hidden'); // ferme le menu déroulant
-    });
-
-    notifBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      notifMenu.classList.toggle('hidden');
-    });
-
+    // Charger le profil au démarrage si l'utilisateur est connecté
+    if (authClient.isAuthenticated()) {
+      loadUserProfile();
+    }
   </script>
 </body>
 </html>
