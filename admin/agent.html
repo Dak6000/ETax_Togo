@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Agents - Système de Paiement des Taxes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#97DDE8',
+                        secondary: '#134D80',
+                        dark: '#082026',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #97DDE8;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #134D80;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-dark">Gestion des Agents</h1>
+                <p class="text-gray-600">Système de paiement des taxes pour commerçants</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Rechercher un agent..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <button class="bg-secondary hover:bg-dark text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Nouvel Agent
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-primary">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500">Agents Totaux</p>
+                        <h3 class="text-3xl font-bold text-dark">248</h3>
+                    </div>
+                    <div class="bg-primary bg-opacity-20 p-3 rounded-full">
+                        <i class="fas fa-users text-primary text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500">Agents Actifs</p>
+                        <h3 class="text-3xl font-bold text-dark">192</h3>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-user-check text-green-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500">Agents Inactifs</p>
+                        <h3 class="text-3xl font-bold text-dark">56</h3>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-user-slash text-red-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters and Table -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- Filters -->
+            <div class="p-6 border-b border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Secteur d'activité</label>
+                        <select id="sectorFilter" class="rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="all">Tous les secteurs</option>
+                            <option value="alimentation">Alimentation</option>
+                            <option value="textile">Textile</option>
+                            <option value="services">Services</option>
+                            <option value="industrie">Industrie</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+                        <select id="statusFilter" class="rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="all">Tous les statuts</option>
+                            <option value="active">Actif</option>
+                            <option value="inactive">Inactif</option>
+                        </select>
+                    </div>
+                    <button id="resetFilters" class="mt-6 text-secondary hover:text-dark font-medium">Réinitialiser</button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500">Exporter:</span>
+                    <button class="text-gray-500 hover:text-secondary p-2 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-file-excel"></i>
+                    </button>
+                    <button class="text-gray-500 hover:text-secondary p-2 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    <button class="text-gray-500 hover:text-secondary p-2 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Nom & Prénom</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Secteur</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Zone</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Date d'adhésion</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Statut</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-secondary uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agentsTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Agents will be populated here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="px-6 py-4 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-gray-700">
+                        Affichage de <span class="font-medium">1</span> à <span class="font-medium">10</span> sur <span class="font-medium">248</span> agents
+                    </p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        Précédent
+                    </button>
+                    <button class="px-3 py-1 rounded-md bg-primary text-white hover:bg-secondary">
+                        1
+                    </button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        2
+                    </button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        3
+                    </button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        Suivant
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for agents
+        const agents = [
+            { id: 1, name: "Jean Dupont", sector: "alimentation", zone: "Zone Nord", date: "15/03/2022", status: "active" },
+            { id: 2, name: "Marie Lambert", sector: "textile", zone: "Zone Sud", date: "22/07/2021", status: "active" },
+            { id: 3, name: "Pierre Gagnon", sector: "services", zone: "Zone Est", date: "05/01/2023", status: "inactive" },
+            { id: 4, name: "Sophie Martin", sector: "industrie", zone: "Zone Ouest", date: "18/11/2022", status: "active" },
+            { id: 5, name: "Luc Tremblay", sector: "alimentation", zone: "Zone Nord", date: "30/09/2021", status: "inactive" },
+            { id: 6, name: "Émilie Roy", sector: "textile", zone: "Zone Sud", date: "12/04/2023", status: "active" },
+            { id: 7, name: "Thomas Lavoie", sector: "autre", zone: "Zone Est", date: "08/05/2022", status: "active" },
+            { id: 8, name: "Nathalie Bergeron", sector: "services", zone: "Zone Ouest", date: "25/12/2021", status: "inactive" },
+            { id: 9, name: "David Leblanc", sector: "industrie", zone: "Zone Nord", date: "14/02/2023", status: "active" },
+            { id: 10, name: "Isabelle Bouchard", sector: "alimentation", zone: "Zone Sud", date: "03/08/2022", status: "active" }
+        ];
+
+        // Sector names mapping
+        const sectorNames = {
+            "alimentation": "Alimentation",
+            "textile": "Textile",
+            "services": "Services",
+            "industrie": "Industrie",
+            "autre": "Autre"
+        };
+
+        // Function to render agents table
+        function renderAgentsTable(filteredAgents = agents) {
+            const tableBody = document.getElementById('agentsTableBody');
+            tableBody.innerHTML = '';
+
+            filteredAgents.forEach(agent => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+
+                const statusClass = agent.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                const statusText = agent.status === 'active' ? 'Actif' : 'Inactif';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-dark">${agent.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${agent.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sectorNames[agent.sector]}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${agent.zone}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${agent.date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${statusText}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div class="flex space-x-2">
+                            <button class="text-primary hover:text-secondary" title="Voir détails">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="text-blue-500 hover:text-blue-700" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-500 hover:text-red-700" title="Désactiver">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to filter agents
+        function filterAgents() {
+            const sectorFilter = document.getElementById('sectorFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            let filteredAgents = agents;
+
+            if (sectorFilter !== 'all') {
+                filteredAgents = filteredAgents.filter(agent => agent.sector === sectorFilter);
+            }
+
+            if (statusFilter !== 'all') {
+                filteredAgents = filteredAgents.filter(agent => agent.status === statusFilter);
+            }
+
+            renderAgentsTable(filteredAgents);
+        }
+
+        // Event listeners
+        document.getElementById('sectorFilter').addEventListener('change', filterAgents);
+        document.getElementById('statusFilter').addEventListener('change', filterAgents);
+        document.getElementById('resetFilters').addEventListener('click', () => {
+            document.getElementById('sectorFilter').value = 'all';
+            document.getElementById('statusFilter').value = 'all';
+            renderAgentsTable();
+        });
+
+        // Initial render
+        document.addEventListener('DOMContentLoaded', renderAgentsTable);
+    </script>
+</body>
+</html>

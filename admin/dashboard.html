@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Taxe TOGO - Dashboard Administrateur</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            color1: '#97dde8',
+            color2: '#134d80',
+            color3: '#082026'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-color2 px-6 py-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center">
+      <div class="text-2xl font-bold text-white tracking-wide">E-Taxe TOGO</div>
+      <span class="ml-4 px-3 py-1 bg-color1 text-color3 text-sm font-semibold rounded-full">Administration</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="text-white">
+        <span id="adminName">Administrateur</span>
+      </div>
+      <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+        🚪 Déconnexion
+      </button>
+    </div>
+  </nav>
+
+  <!-- Contenu principal -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg min-h-screen">
+      <div class="p-6">
+        <h2 class="text-lg font-semibold text-color3 mb-4">Menu Administration</h2>
+        <nav class="space-y-2">
+          <a href="#" class="flex items-center px-4 py-2 text-color2 bg-color1 rounded-lg">
+            📊 Dashboard
+          </a>
+          <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+            👥 Utilisateurs
+          </a>
+          <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+            💰 Taxes
+          </a>
+          <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+            📈 Rapports
+          </a>
+          <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+            ⚙️ Paramètres
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Contenu principal -->
+    <main class="flex-1 p-8">
+      <!-- En-tête -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-color3">Dashboard Administrateur</h1>
+        <p class="text-gray-600 mt-2">Gestion et suivi de la plateforme E-Taxe TOGO</p>
+      </div>
+
+      <!-- Statistiques -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center">
+            <div class="p-3 bg-blue-100 rounded-lg">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Utilisateurs</p>
+              <p class="text-2xl font-semibold text-gray-900" id="totalUsers">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center">
+            <div class="p-3 bg-green-100 rounded-lg">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Recettes Totales</p>
+              <p class="text-2xl font-semibold text-gray-900" id="totalRevenue">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center">
+            <div class="p-3 bg-yellow-100 rounded-lg">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Taxes Impayées</p>
+              <p class="text-2xl font-semibold text-gray-900" id="unpaidTaxes">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center">
+            <div class="p-3 bg-purple-100 rounded-lg">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Taux de Paiement</p>
+              <p class="text-2xl font-semibold text-gray-900" id="paymentRate">-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graphiques et tableaux -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Graphique des recettes -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Évolution des Recettes</h3>
+          <canvas id="revenueChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Activité récente -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Activité Récente</h3>
+          <div id="recentActivity" class="space-y-3">
+            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+              <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">Nouveau paiement reçu</p>
+                <p class="text-xs text-gray-500">Il y a 5 minutes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Taxes impayées -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Taxes Impayées</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contribuable</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Numéro Fiscal</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Échéance</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="unpaidTaxesTable" class="bg-white divide-y divide-gray-200">
+              <!-- Les données seront chargées dynamiquement -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/client.js"></script>
+  <script src="dashboard.js"></script>
+  <script>
+    // Vérifier l'authentification et les droits admin
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!authClient.isAuthenticated()) {
+        redirectTo('/login.html');
+        return;
+      }
+      
+      if (!authClient.isAdmin()) {
+        showMessage('Accès refusé. Droits d\'administrateur requis.', 'error');
+        redirectTo('/dashboard');
+        return;
+      }
+
+      // Charger le nom de l'administrateur
+      const adminName = authClient.user ? `${authClient.user.nom} ${authClient.user.prenom}` : 'Administrateur';
+      document.getElementById('adminName').textContent = adminName;
+
+      // Gestionnaire de déconnexion
+      document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        await authClient.logout();
+        showMessage('Déconnexion réussie', 'success');
+        setTimeout(() => {
+          redirectTo('/login.html');
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html> 
